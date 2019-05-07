@@ -8,7 +8,7 @@ class ConfigParser(yaml_unfolder.YamlUnfolder):
     default_config = '.jjv_config.yml'
 
     def __init__(self, config, verbose=0):
-        yaml_unfolder.YamlUnfolder.__init__(self, root='.', verbose=0)
+        yaml_unfolder.YamlUnfolder.__init__(self, root='.', verbose=2)
         #super(self.__class__, self).__init__(root='.')
 
         self.verbose = verbose

@@ -84,6 +84,8 @@ class CallGraph(Graph):
 
     def unfold_config(self, path, yaml_config):
         try:
+            print("yaml config: {}".format(yaml_config))
+            print("index: {}".format(self.file_index))
             name = self.file_index.get_job_name(yaml_config)
         except KeyError:
             print("Warning: building call graph for not a job {}".format(yaml_config))

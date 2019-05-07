@@ -44,6 +44,8 @@ class FileIndex:
         Loader.add_constructor('!include:', self.include_constructor)
         Loader.add_constructor('!include-raw:', self.include_raw_constructor)
         Loader.add_constructor('!include', self.include_constructor)
+        Loader.add_constructor('!include-raw-escape:', self.include_raw_constructor)
+        Loader.add_constructor('!include-raw', self.include_raw_constructor)
 
 
     def load_files(self, path):
@@ -175,25 +177,34 @@ class FileIndex:
         """
         Called when PyYaml encounters '!include'
         """
-        v = self._unfold_yaml(node.value)
+        if isinstance(node.value, list):
+            for name in node.value:
+                self.include_constructor(loader, name)
+        else:
+            v = self._unfold_yaml(node.value)
 
-        return v
+            return v
 
     def include_raw_constructor(self, loader, node):
         """
         Called when PyYaml encounters '!include-raw'
         """
 
-        path = convert_path(node.value)
+        if isinstance(node.value, list):
+            for name in node.value:
+                self.include_raw_constructor(loader, name)
+        else:
+            path = convert_path(node.value)
+            print("the path {}".format(path))
 
-        with open(path, 'r') as f:
-            config = f.read()
+            with open("resources/scripts/{}".format(path), 'r') as f:
+                config = f.read()
 
-            config = self.inject_include_info(path, config, include_type='include-raw')
+                config = self.inject_include_info(path, config, include_type='include-raw')
 
-            self.add_file(path, config)
+                self.add_file(path, config)
 
-            return config
+                return config
 
     def default_load(self, name, config):
         pass

@@ -5,6 +5,7 @@ def convert_path(path):
     """
     Convert path to a normalized format
     """
+    print("PATH to convert: {}".format(path))
     if os.path.isabs(path):
         raise Exception("Cannot include file with absolute path {}. Please use relative path instead".format((path)))
 
